@@ -16,6 +16,7 @@ import AboutScreen from "./screens/AboutScreen";
 import Colors from "./constants/Colors";
 import AuthScreen from "./navigation/AuthScreen";
 import SettingsScreen from "./screens/SettingsScreen";
+import EventScreen from "./screens/EventScreen";
 
 const { store, persistor } = fn();
 const Stack = createStackNavigator();
@@ -80,6 +81,8 @@ export default function App(props) {
                 />
                 <Stack.Screen name="About" component={AboutScreen} />
                 <Stack.Screen name="Settings" component={SettingsScreen} />
+                <Stack.Screen name="Event" component={EventScreen} />
+
                 <Stack.Screen
                   name="EventsHome"
                   component={BottomTabNavigator}

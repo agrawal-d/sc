@@ -1,14 +1,44 @@
 import { connect } from "react-redux";
 import * as React from "react";
-import { Text, Button, View } from "react-native";
+import { Text, Button, View, TouchableNativeFeedback } from "react-native";
 import colors from "../constants/Colors";
 import { addTodo } from "../actions/actions";
 import globalStyles from "../styles/styles";
 import Colors from "../constants/Colors";
+import { FlatList } from "react-native-gesture-handler";
+
+function Item({ event }) {
+  return (
+    <View style={globalStyles.margin}>
+      <Text style={globalStyles.margin}>{event.fields.name}</Text>
+    </View>
+  );
+}
 
 class HomeScreen extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      loaded: false,
+      events: null
+    };
+    this.getEvents();
+  }
+
+  async getEvents() {
+    var requestOptions = {
+      method: "GET"
+    };
+
+    fetch(
+      "https://debug.smartcampus-bphc.in/api/notifier/events/",
+      requestOptions
+    )
+      .then(response => response.text())
+      .then(result =>
+        this.setState({ events: JSON.parse(result), loaded: true })
+      )
+      .catch(error => console.log("error", error));
   }
 
   handleOnPress = async () => {
@@ -22,29 +52,26 @@ class HomeScreen extends React.Component {
   };
 
   render() {
-    const list = [];
-
-    function getRgb() {
-      let ret = "rgb(";
-      ret += (Math.random() * 255).toString() + ",";
-      ret += (Math.random() * 255).toString() + ",";
-      ret += (Math.random() * 255).toString() + ")";
-      return ret;
+    if (!this.state.loaded) {
+      return (
+        <View style={globalStyles.container}>
+          <Text style={{ flex: 1, textAlign: "center" }}>
+            Fetching latest events
+          </Text>
+        </View>
+      );
     }
-    console.log("EVENTS", this.props.events);
-    for (let todo of this.props.events) {
+    let list = [];
+    console.log(this.state.events);
+    for (let event of this.state.events) {
       list.push(
-        <Text
-          key={todo.id}
-          style={{ padding: 10, backgroundColor: getRgb(), marginBottom: 10 }}
-        >
-          {todo.text}
-        </Text>
+        <Text key={event.fields.created_at}>Event : {event.fields.name}</Text>
       );
     }
     return (
       <View style={globalStyles.margin}>
-        <View style={globalStyles.margin}>
+        <Text style={globalStyles.heading}>Current Events</Text>
+        {/* <View style={globalStyles.margin}>
           <Button
             onPress={this.handleOnPress}
             color={Colors.themePrimary}
@@ -53,14 +80,31 @@ class HomeScreen extends React.Component {
         </View>
         <View style={globalStyles.margin}>
           <Button onPress={this.handleClear} title="Delete all todos"></Button>
-        </View>
-        {list}
+        </View> */}
+        <FlatList
+          data={this.state.events}
+          renderItem={({ item }) => (
+            <TouchableNativeFeedback
+              onPress={() => {
+                this.props.navigation.navigate("Event", {
+                  event: item
+                });
+              }}
+            >
+              <View style={globalStyles.event}>
+                <Text>{item.fields.name}</Text>
+              </View>
+            </TouchableNativeFeedback>
+          )}
+          keyExtractor={item => item.fields.created_at}
+        ></FlatList>
         <View style={globalStyles.margin}>
           <Button
             onPress={() => {
               this.props.navigation.navigate("About");
             }}
-            title="Nav"
+            title="Create new event"
+            color={Colors.themePrimary}
           ></Button>
         </View>
       </View>
