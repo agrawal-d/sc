@@ -10,8 +10,10 @@ import BottomTabNavigator from "./navigation/BottomTabNavigator";
 import useLinking from "./navigation/useLinking";
 
 import { Provider } from "react-redux";
-import store from "./Store";
-
+import fn from "./Store";
+import { PersistGate } from "redux-persist/integration/react";
+import AboutScreen from "./screens/AboutScreen";
+const { store, persistor } = fn();
 const Stack = createStackNavigator();
 
 export default function App(props) {
@@ -32,6 +34,7 @@ export default function App(props) {
         // Load fonts
         await Font.loadAsync({
           ...Ionicons.font,
+          // @ts-ignore
           "space-mono": require("./assets/fonts/SpaceMono-Regular.ttf")
         });
       } catch (e) {
@@ -51,17 +54,20 @@ export default function App(props) {
   } else {
     return (
       <Provider store={store}>
-        <View style={styles.container}>
-          {Platform.OS === "ios" && <StatusBar barStyle="default" />}
-          <NavigationContainer
-            ref={containerRef}
-            initialState={initialNavigationState}
-          >
-            <Stack.Navigator>
-              <Stack.Screen name="Root" component={BottomTabNavigator} />
-            </Stack.Navigator>
-          </NavigationContainer>
-        </View>
+        <PersistGate loading={null} persistor={persistor}>
+          <View style={styles.container}>
+            {Platform.OS === "ios" && <StatusBar barStyle="default" />}
+            <NavigationContainer
+              ref={containerRef}
+              initialState={initialNavigationState}
+            >
+              <Stack.Navigator>
+                <Stack.Screen name="Root" component={BottomTabNavigator} />
+                <Stack.Screen name="About" component={AboutScreen} />
+              </Stack.Navigator>
+            </NavigationContainer>
+          </View>
+        </PersistGate>
       </Provider>
     );
   }

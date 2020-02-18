@@ -1,62 +1,49 @@
 import { connect } from "react-redux";
 import * as React from "react";
-import {
-  Image,
-  Platform,
-  StyleSheet,
-  Text,
-  Button,
-  TouchableOpacity,
-  View
-} from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
-import * as WebBrowser from "expo-web-browser";
+import { Text, Button, View } from "react-native";
 
-import { MonoText } from "../components/StyledText";
+import { addTodo } from "../actions";
+import globalStyles from "../styles";
 
 class HomeScreen extends React.Component {
   constructor(props) {
     super(props);
   }
 
-  handleOnPress = () => {
+  handleOnPress = async () => {
+    this.props.dispatch(addTodo(new Date().getUTCSeconds()));
+  };
+
+  handleClear = async () => {
     this.props.dispatch({
-      type: "ADD_TODO",
-      id: Math.random(),
-      text: `This is a todo!`
+      type: "CLEAR_TODOS"
     });
   };
 
   render() {
-    const todos = [];
-    for (let todo of this.props.todos) {
-      todos.push(
-        <Text key={todo.id}>
-          {todo.text} - {todo.id}
-        </Text>
-      );
-    }
+    const list = [];
 
+    for (let todo of this.props.todos) {
+      list.push(<Text key={todo.id}>{todo.text}</Text>);
+    }
     return (
-      <View style={styles.container}>
+      <View>
         <Button onPress={this.handleOnPress} title="Add todo"></Button>
-        {todos}
+        <Button onPress={this.handleClear} title="Delete all todos"></Button>
+
+        {list}
+        <View style={globalStyles.margin}>
+          <Button
+            onPress={() => {
+              this.props.navigation.navigate("About");
+            }}
+            title="Nav"
+          ></Button>
+        </View>
       </View>
     );
   }
 }
-
-HomeScreen.navigationOptions = {
-  header: null
-};
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    padding: 20
-  }
-});
 
 const mapStateToProps = state => {
   return {

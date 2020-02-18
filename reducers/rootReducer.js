@@ -1,5 +1,7 @@
 import { combineReducers } from "redux";
+import { AsyncStorage } from "react-native";
 
+/****************************************************************/
 // Reusable utility functions
 function updateObject(oldObject, newValues) {
   // Encapsulate the idea of passing a new object as the first parameter
@@ -27,15 +29,8 @@ function createReducer(initialState, handlers) {
     }
   };
 }
-// Handler for a specific case ("case reducer")
-function setVisibilityFilter(visibilityState, action) {
-  // Technically, we don't even care about the previous state
-  return action.filter;
-}
-// Handler for an entire slice of state ("slice reducer")
-const visibilityReducer = createReducer("SHOW_ALL", {
-  SET_VISIBILITY_FILTER: setVisibilityFilter
-});
+/****************************************************************/
+
 // Case reducer
 function addTodo(todosState, action) {
   const newTodos = todosState.concat({
@@ -45,30 +40,25 @@ function addTodo(todosState, action) {
   });
   return newTodos;
 }
-// Case reducer
-function toggleTodo(todosState, action) {
-  const newTodos = updateItemInArray(todosState, action.id, todo => {
-    return updateObject(todo, { completed: !todo.completed });
-  });
-  return newTodos;
+function clearTodos(todosState, action) {
+  return [];
 }
-// Case reducer
-function editTodo(todosState, action) {
-  const newTodos = updateItemInArray(todosState, action.id, todo => {
-    return updateObject(todo, { text: action.text });
-  });
-  return newTodos;
-}
+
 // Slice reducer
 const todosReducer = createReducer([], {
   ADD_TODO: addTodo,
-  TOGGLE_TODO: toggleTodo,
-  EDIT_TODO: editTodo
+  CLEAR_TODOS: clearTodos
+});
+
+const userNameReducer = createReducer("No username", {
+  CLEAR_USERNAME: () => {
+    return "No username";
+  }
 });
 
 // "Root reducer"
 const appReducer = combineReducers({
-  visibilityFilter: visibilityReducer,
+  userName: userNameReducer,
   todos: todosReducer
 });
 
