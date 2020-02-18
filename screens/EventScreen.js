@@ -35,6 +35,12 @@ class EventScreen extends React.Component {
           <Text>{fields.event_rating}</Text>
           <Text style={globalStyles.themeTitle}>Active</Text>
           <Text>{fields.is_active ? "Yes" : "No"}</Text>
+          <Text style={globalStyles.themeTitle}>Total Seats</Text>
+          <Text>{fields["Total Seats"]}</Text>
+          {/* doesn't display */}
+          <Text style={globalStyles.themeTitle}>Filled Seats</Text>
+          <Text>{fields["Filled Seats"]}</Text>
+          {/* doesn't display */}
         </ScrollView>
       </View>
     );

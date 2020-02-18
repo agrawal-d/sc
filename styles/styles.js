@@ -27,6 +27,14 @@ const globalStyles = StyleSheet.create({
     elevation: 1,
     borderRadius: 10
   },
+  eventInput: {
+    margin: 10,
+    padding: 10,
+    backgroundColor: "rgb(255,255,255)",
+    color: "black",
+    elevation: 1,
+    borderRadius: 10
+  },
   event: {
     padding: 20
   },

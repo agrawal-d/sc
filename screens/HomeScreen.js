@@ -51,6 +51,17 @@ class HomeScreen extends React.Component {
     });
   };
 
+  componentDidMount() {
+    //Here is the Trick
+    const { navigation } = this.props;
+    //Adding an event listner om focus
+    //So whenever the screen will have focus it will set the state to zero
+    this.focusListener = navigation.addListener("didFocus", () => {
+      this.setState({ loaded: false, events: null });
+      this.getEvents();
+    });
+  }
+
   render() {
     if (!this.state.loaded) {
       return (
@@ -101,10 +112,19 @@ class HomeScreen extends React.Component {
         <View style={globalStyles.margin}>
           <Button
             onPress={() => {
-              this.props.navigation.navigate("About");
+              this.props.navigation.navigate("NewEvent");
             }}
             title="Create new event"
             color={Colors.themePrimary}
+          ></Button>
+        </View>
+        <View style={globalStyles.margin}>
+          <Button
+            onPress={() => {
+              this.getEvents();
+            }}
+            title="Refresh"
+            color="grey"
           ></Button>
         </View>
       </View>
