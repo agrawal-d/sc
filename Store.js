@@ -47,7 +47,7 @@ const persistedReducer = persistReducer(persistConfig, appReducer);
 export default () => {
   let store = createStore(
     persistedReducer,
-    { userName: "No username", todos: [] },
+    { userDetails: {}, events: [], auth: {} },
     composedEnhancers
   );
   let persistor = persistStore(store);

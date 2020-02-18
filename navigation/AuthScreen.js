@@ -1,37 +1,37 @@
 import * as React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import TabBarIcon from "../components/TabBarIcon";
-import HomeScreen from "../screens/HomeScreen";
+import RootScreen from "../screens/LoginScreen";
 import SettingsScreen from "../screens/SettingsScreen";
 
 const BottomTab = createBottomTabNavigator();
-const INITIAL_ROUTE_NAME = "Home";
+const INITIAL_ROUTE_NAME = "Login";
 
-export default function BottomTabNavigator({ navigation, route }) {
+export default function AuthScreen({ navigation, route }) {
   // Set the header title on the parent stack navigator depending on the
   // currently active tab. Learn more in the documentation:
   // https://reactnavigation.org/docs/en/screen-options-resolution.html
   navigation.setOptions({ headerTitle: getHeaderTitle(route) });
 
   return (
-    <BottomTab.Navigator initialRouteName={INITIAL_ROUTE_NAME}>
+    <BottomTab.Navigator initialRouteName="Login">
       <BottomTab.Screen
-        name="Home"
-        component={HomeScreen}
+        name="Sign Up"
+        component={SettingsScreen}
         options={{
-          title: "Home",
+          title: "Sign Up",
           tabBarIcon: ({ focused }) => (
-            <TabBarIcon focused={focused} name="md-home" />
+            <TabBarIcon focused={focused} name="md-settings" />
           )
         }}
       />
       <BottomTab.Screen
-        name="Settings"
-        component={SettingsScreen}
+        name="Login"
+        component={RootScreen}
         options={{
-          title: "Settings",
+          title: "Login",
           tabBarIcon: ({ focused }) => (
-            <TabBarIcon focused={focused} name="md-settings" />
+            <TabBarIcon focused={focused} name="md-home" />
           )
         }}
       />
@@ -44,9 +44,9 @@ function getHeaderTitle(route) {
     route.state?.routes[route.state.index]?.name ?? INITIAL_ROUTE_NAME;
 
   switch (routeName) {
-    case "Home":
-      return "Events Home";
-    case "Settings":
-      return "Settings";
+    case "Login":
+      return "Login";
+    case "Sign Up":
+      return "Sign Up";
   }
 }

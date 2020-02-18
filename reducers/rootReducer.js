@@ -32,15 +32,15 @@ function createReducer(initialState, handlers) {
 /****************************************************************/
 
 // Case reducer
-function addTodo(todosState, action) {
-  const newTodos = todosState.concat({
+function addTodo(prevTodos, action) {
+  const newTodos = prevTodos.concat({
     id: action.id,
     text: action.text,
     completed: false
   });
   return newTodos;
 }
-function clearTodos(todosState, action) {
+function clearTodos(prevTodos, action) {
   return [];
 }
 
@@ -56,10 +56,19 @@ const userNameReducer = createReducer("No username", {
   }
 });
 
+const authReducer = createReducer("No username", {
+  SET_AUTH: (prevAuth, action) => {
+    return {
+      ...action.auth
+    };
+  }
+});
+
 // "Root reducer"
 const appReducer = combineReducers({
-  userName: userNameReducer,
-  todos: todosReducer
+  userDetails: userNameReducer,
+  auth: authReducer,
+  events: todosReducer
 });
 
 export default appReducer;

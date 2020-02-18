@@ -13,8 +13,14 @@ import { Provider } from "react-redux";
 import fn from "./Store";
 import { PersistGate } from "redux-persist/integration/react";
 import AboutScreen from "./screens/AboutScreen";
+import Colors from "./constants/Colors";
+import AuthScreen from "./navigation/AuthScreen";
+import SettingsScreen from "./screens/SettingsScreen";
+
 const { store, persistor } = fn();
 const Stack = createStackNavigator();
+
+persistor.purge();
 
 export default function App(props) {
   const [isLoadingComplete, setLoadingComplete] = React.useState(false);
@@ -62,8 +68,29 @@ export default function App(props) {
               initialState={initialNavigationState}
             >
               <Stack.Navigator>
-                <Stack.Screen name="Root" component={BottomTabNavigator} />
+                <Stack.Screen
+                  name="Root"
+                  component={AuthScreen}
+                  options={{
+                    headerStyle: {
+                      backgroundColor: Colors.themePrimary
+                    },
+                    headerTintColor: "#fff"
+                  }}
+                />
                 <Stack.Screen name="About" component={AboutScreen} />
+                <Stack.Screen name="Settings" component={SettingsScreen} />
+                <Stack.Screen
+                  name="EventsHome"
+                  component={BottomTabNavigator}
+                  options={{
+                    headerStyle: {
+                      backgroundColor: Colors.themePrimary
+                    },
+                    headerTintColor: "#fff",
+                    headerLeft: null
+                  }}
+                />
               </Stack.Navigator>
             </NavigationContainer>
           </View>

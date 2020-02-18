@@ -1,14 +1,21 @@
 import * as React from "react";
 import { View, Text } from "react-native";
 import { connect } from "react-redux";
-import globalStyles from "../styles";
-import "../actions";
+import globalStyles from "../styles/styles";
+import "../actions/actions";
 
-function AboutScreen({ navigation, route }) {
-  return (
-    <View style={globalStyles.margin}>
-      <Text>Hello world</Text>
-    </View>
-  );
+class About extends React.Component {
+  constructor(props) {
+    super(props);
+    this.props.navigation.setOptions({ headerTitle: "Abt scr" });
+  }
+  render() {
+    return (
+      <View style={globalStyles.margin}>
+        <Text>Abt {JSON.stringify(this.props)}</Text>
+      </View>
+    );
+  }
 }
-export default connect()(AboutScreen);
+
+export default connect()(About);
