@@ -11,15 +11,15 @@ Features:
 
 ## Screenshots
 
-![Login](screenshots/login.png)
+<img src="screenshots/login.png" width="400"/>
 
-![Home](screenshots/home.png)
+<img src="screenshots/home.png" width="400"/>
 
-![Event](screenshots/event.png)
+<img src="screenshots/event.png" width="400"/>
 
-![New Event](screenshots/new_event.png)
+<img src="screenshots/new_event.png" width="400"/>
 
-![Event time picker](screenshots/new_event_time.png)
+<img src="screenshots/new_event_time.png" width="400"/>
 
 ## Details
 
